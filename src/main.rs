@@ -27,33 +27,19 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    let sysinfo = match sysinfo::load_sysinfo(&args.sysinfo) {
-        Ok(val) => val,
-        Err(e) => {
-            eprintln!("error loading sysinfo: {}", e);
-            std::process::exit(1);
-        }
-    };
+    let sysinfo = sysinfo::load_sysinfo(&args.sysinfo).expect("error loading sysinfo");
     let host_map = sysinfo.create_host_map();
 
     let sources = args.sources.split(",");
     for s in sources {
         let source = s.trim();
 
-        match loader::load_phonebook(&source, &host_map) {
-            Ok(records) => {
-                println!("loaded {} records.", records.len());
-                if let Err(e) = exporter::export_phonebook(&records, &args.path) {
-                    eprintln!("error exporting to XML: {}", e);
-                    std::process::exit(1);
-                }
-                println!("exported XML to {:?}", args.path);
-                break; // Stop after the first successful processing of a phonebook
-            }
-            Err(e) => {
-                eprintln!("error loading phonebook: {}", e);
-                std::process::exit(1);
-            }
-        }
+        let records = loader::load_phonebook(&source, &host_map).expect("error loading phonebook");
+        println!("loaded {} records.", records.len());
+
+        exporter::export_phonebook(&records, &args.path).expect("error exporting to XML");
+
+        println!("exported XML to {:?}", args.path);
+        break; // Stop after the first successful processing of a phonebook
     }
 }
