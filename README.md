@@ -17,5 +17,5 @@ cargo run -- \
 Compile
 
 ```bash
-cargo build --release
+cargo build --profile minsize
 ```
