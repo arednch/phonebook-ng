@@ -38,8 +38,9 @@ fn main() {
         println!("loaded {} records.", records.len());
 
         exporter::export_phonebook(&records, &args.path).expect("error exporting to XML");
-
         println!("exported XML to {:?}", args.path);
-        break; // Stop after the first successful processing of a phonebook
+
+        // Stop after the first successful processing of a phonebook
+        break;
     }
 }
