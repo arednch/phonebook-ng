@@ -45,6 +45,10 @@ fn main() {
     }
     let delay = time::Duration::from_secs(args.reload.into());
 
+    // TODO: Start a simple SIP server.
+    // - must: register returns an OK
+    // - optimally: redirects calls
+
     loop {
         let sysinfo = sysinfo::load_sysinfo(&args.sysinfo).expect("error loading sysinfo");
         let host_map = sysinfo.create_host_map();
