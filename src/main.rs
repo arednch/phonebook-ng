@@ -3,7 +3,7 @@ mod loader;
 mod sysinfo;
 
 use core::time;
-use std::{arch::aarch64::int32x2x4_t, thread};
+use std::thread;
 
 use clap::Parser;
 
